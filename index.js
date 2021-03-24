@@ -49,6 +49,7 @@ const vcard = 'BEGIN:VCARD\n'
 prefix = ''
 blocked = []   
 limitawal = 10
+numbernye = '0@s.whatsapp.net'
 memberlimit = 0
 cr = '*BOT THIS IS ALREADY VERIFIED*'
 
@@ -364,14 +365,14 @@ if (messageStubType == 'REVOKE' && isRevoke) {
 *│* *Waktu* : ${moment.unix(int.timestamp).format('HH:mm:ss DD/MM/YYYY')}
 *│* *Pesan* : ${body ? body : '-'}`
  
-                         itsmeiky.sendMessage(from, strConversation, MessageType.text, { contextInfo: {mentionedJid: okok, isForwarded: true, forwardingScore: 300}, quoted: { "key": { "participant": `${numbernye}`, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": buffer, "mimetype": "application/octet-stream", "title": `${fake}`, "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
+                         itsmeiky.sendMessage(from, strConversation, MessageType.text)
                     } else if (int.type == 'stickerMessage') {
                          const filename = `${sender.replace('@s.whatsapp.net', '')}-${moment().unix()}`
                          const savedFilename = await itsmeiky.downloadAndSaveMediaMessage(int.data, `./src/${filename}`);
                          const strConversation = `*◪* *ANTIDELETE*\n*│*\n*│* Nama: ${pushname}\n*│* Tag: @${sender.replace('@s.whatsapp.net', '')}\n*│* Tipe : Sticker\n*│* Waktu: ${moment.unix(int.timestamp).format('HH:mm:ss DD/MM/YYYY')}`
 				const buff = fs.readFileSync(savedFilename)
-				itsmeiky.sendMessage(from, strConversation, MessageType.text, { contextInfo: {mentionedJid: [sender]}, quoted: { "key": { "participant": `${numbernye}`, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": buffer, "mimetype": "application/octet-stream", "title": `${fake}`, "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
-               itsmeiky.sendMessage(from, buff, MessageType.sticker, { contextInfo: {mentionedJid: [sender]}, quoted: { "key": { "participant": `${numbernye}`, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": buffer, "mimetype": "application/octet-stream", "title": `${fake}`, "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
+				itsmeiky.sendMessage(from, strConversation, MessageType.text)
+               itsmeiky.sendMessage(from, buff, MessageType.sticker)
                // console.log(stdout)
 				fs.unlinkSync(savedFilename)
  
@@ -380,14 +381,14 @@ if (messageStubType == 'REVOKE' && isRevoke) {
 				const savedFilename = await itsmeiky.downloadAndSaveMediaMessage(int.data, `./src/${filename}`);
 				const buff = fs.readFileSync(savedFilename)
 				const strConversation =  `*◪* *ANTIDELETE*\n*│*\n*│* Nama : ${pushname}\n*│* Tag: @${sender.replace('@s.whatsapp.net', '')}\n*│* Tipe : Image\n*│* Pesan: ${body ? body : '-'}\n*│* Waktu: ${moment.unix(int.timestamp).format('HH:mm:ss DD/MM/YYYY')}`
-                         itsmeiky.sendMessage(from, buff, MessageType.image, { contextInfo: {mentionedJid: okok}, caption: strConversation, quoted: { "key": { "participant": `${numbernye}`, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": buffer, "mimetype": "application/octet-stream", "title": `${fake}`, "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
+                         itsmeiky.sendMessage(from, buff, MessageType.image)
                  fs.unlinkSync(savedFilename)
 			} else if (int.type == 'audioMessageMessage') {
 				const filename = `${sender.replace('@s.whatsapp.net', '')}-${moment().unix()}`
 				const savedFilename = await itsmeiky.downloadAndSaveMediaMessage(int.data, `./src/${filename}`);
 				const buff = fs.readFileSync(savedFilename)
 				const strConversation =  `*◪* *ANTIDELETE*\n*│*\n*│* Nama : ${pushname}\n*│* Tag: @${sender.replace('@s.whatsapp.net', '')}\n*│* Tipe : Audio\n*│* Pesan: ${body ? body : '-'}\n*│* Waktu: ${moment.unix(int.timestamp).format('HH:mm:ss DD/MM/YYYY')}`
-                         itsmeiky.sendMessage(from, buff, MessageType.audio, { contextInfo: {mentionedJid: okok}, filename: `${pushname}`, mimetype: 'audio/mp4', quoted: { "key": { "participant": `${numbernye}`, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": buffer, "mimetype": "application/octet-stream", "title": `${fake}`, "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
+                         itsmeiky.sendMessage(from, buff, MessageType.audio)
                    fs.unlinkSync(savedFilename)
  
                     }

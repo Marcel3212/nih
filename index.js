@@ -403,7 +403,7 @@ if (messageStubType == 'REVOKE' && isRevoke) {
 			if (!iky.message) return
 			if (iky.key && iky.key.remoteJid == 'status@broadcast') return
 			let infoMSG = JSON.parse(fs.readFileSync('./src/.dat/msg.data.json'))
-		infoMSG.push(JSON.parse(JSON.stringify(ben)))
+		infoMSG.push(JSON.parse(JSON.stringify(iky)))
 		fs.writeFileSync('./src/.dat/msg.data.json', JSON.stringify(infoMSG, null, 2))
 		const urutan_pesan = infoMSG.length
 		if (urutan_pesan > 5000) {

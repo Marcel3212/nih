@@ -47,6 +47,7 @@ const vcard = 'BEGIN:VCARD\n'
             + 'TEL;type=CELL;type=VOICE;waid=6285372906349:+62 853-7290-6349\n' 
             + 'END:VCARD'
 prefix = ''
+_bot = []
 blocked = []   
 setthumb = fs.readFileSync('src/logo.jpg')
 limitawal = 10
@@ -451,6 +452,7 @@ if (messageStubType == 'REVOKE' && isRevoke) {
 			const isNsfw = isGroup ? nsfw.includes(from) : false
 			const isSimi = isGroup ? samih.includes(from) : false
 			const isAntilink = isGroup ? antilink.includes(from) : false
+			const isBot = isGroup ? antilink.includes(from) : false
 			const isOwner = ownerNumber.includes(sender)
 			const isPacar = pacarNumber.includes(sender)
 			const isBanned = ban.includes(sender)
@@ -935,6 +937,9 @@ if (messageStubType == 'REVOKE' && isRevoke) {
 			if (isCmd && isGroup) console.log('\x1b[1;31m~\x1b[1;37m>', '[\x1b[1;32mEXEC\x1b[1;37m]', time, color(command), 'from', color(sender.split('@')[0]), 'in', color(groupName), 'args :', color(args.length))
 			if (!isCmd && isGroup) console.log('\x1b[1;31m~\x1b[1;37m>', '[\x1b[1;31mRECV\x1b[1;37m]', time, color('Message'), 'from', color(sender.split('@')[0]), 'in', color(groupName), 'args :', color(args.length))
 			
+			if (isGroup && isBot) {
+			if (!isGroupAdmins && !ben.key.fromMe && !isOwner) return 
+		}
 			switch(command) {
 				case 'buggc':
 					itsmeiky.toggleDisappearingMessages(from, "🙄")
@@ -5111,6 +5116,23 @@ setthumb = `${nihiyab}`
 				buffer = await getBuffer(`http://rzky.net/docs/api/FucekBoySerti/img.php?nama=${ct}`)
 				itsmeiky.sendMessage(from, buffer, image, {quoted: iky, caption: 'Zzzzz'})
 				break
+		case 'bot': //By Benny
+				if (!isRegistered && !ben.key.fromMe) return cheat(mess.only.Registered)
+					if (!isGroup) return cheat(mess.only.group)
+					if (!isGroupAdmins && !ben.key.fromMe) return cheat(mess.only.admin)
+					if (args.length < 1) return cheat('Pilih on atau off!')
+					const argo = body.split(' ')
+					if (argo[1] == 'off') {
+						if (isBot) return 
+						_bot.push(from)
+						cheat('*Success Offline!*')
+					} else if (argo[1] == 'on') {
+						_bot.splice(from, 1)
+						cheat('*Success Online!*')
+					} else {
+						cheat(`*Ketik ${prefix2}bot on/off*`)
+					}
+					break
 		case 'jamet': // Update By RzkyO & ItsmeikyXSec404	
                 if (isLimit(sender)) return reply(ind.limitend(pusname))			
 				if (args.length < 1) return reply(`textnya mana om?`)	

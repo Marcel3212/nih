@@ -39,29 +39,15 @@ const { recognize } = require('./lib/ocr')
 const { exec } = require("child_process")
 const { wait, simih, getBuffer, h2k, generateMessageID, getGroupAdmins, getRandom, banner, start, info, success, close } = require('./lib/functions')
 const tiktod = require('tiktok-scraper')
-const igdl = require('instagram-scraping')
-const igdls = require('instagram-url-direct')
-const imageToBase64 = require('image-to-base64');
-const base64ToImage = require('base64-to-image');
-const cheerio = require('cheerio')
-const infotlp = require('no-telp')
 const brainly = require('brainly-scraper')
-const rumus = require('rumus-bdr')
-const angkab = require('@develoka/angka-terbilang-js')
 const ffmpeg = require('fluent-ffmpeg')
 const imgbb = require('imgbb-uploader')
-const xnxx = require('express').Router();
-const translate = require('@vitalets/google-translate-api')
-const imgtopdf = require("pdfkit")
 const cd = 4.32e+7
 const { removeBackgroundFromImageFile } = require('remove.bg')
 const toMs = require('ms')
 const ms = require('parse-ms')
 const { yta, ytv } = require('./lib/ytdl')
 const { ind } = require('./language')
-const cron = require('node-cron')
-const exect = require('await-exec')
-const webp = require('webp-converter')
 const apivhtear = 'MRKINGLEO7788'
 const ZeksApi = 'apivinz'
 const BarBarKey = 'IDxO1TFYnKADlX4pxcHa'
@@ -76,25 +62,20 @@ const vcard = 'BEGIN:VCARD\n'
             + 'TEL;type=CELL;type=VOICE;waid=6285656214208:+6285656214208\n'  // Ganti jadi nomormu, tapi jangan ubah polanya
             + 'END:VCARD' // jangan di ubah
 prefix = '#'
-baterai = {
-	battery: "" || "Tidak terdeteksi",
-	isCharge: "" || false
-}
 fake = '*_ada yang nyuruh kamu unsend ? di saat antidelete aktif ??. sangat Goblok,pesanmu terdeteksi_*'
 fakes = 'SELFBOT AND PUBLICBOT-WA'
-nomornye = '0@s.whatsapp.net'
+nomornye = '0'
+numbernye = '0@s.whatsapp.net'
 blocked = []
-banChats = true
-autojoin = false
-autodemote = false
-waktuafk = `${time}`
-reason = 'Nothing'
-setgrup = "6289636006352-1606097314@g.us"
 limitawal = '1000' //terserah ganti atau engga
 cr = '*MR.KINGLEOBOT ALREADY VERIFIED✅'
+setgrup = "6289636006352-1606097314@g.us"
+fake = "*SELFBOT*"
 vr = '*🍁MR.KINGLEO🍁*'
+banChats = true
 offline = false
 publik = false
+waktuafk = '-'
 alasanafk = '-'
 /******** OWNER NUMBER**********/
 const ownerNumber = ["6285656214208@s.whatsapp.net"]  //ganti menjadi nomormu
@@ -113,17 +94,11 @@ const uang = JSON.parse(fs.readFileSync('./database/user/uang.json'))
 const antilink = JSON.parse(fs.readFileSync('./database/group/antilink.json'))
 const bad = JSON.parse(fs.readFileSync('./database/group/bad.json'))
 const badword = JSON.parse(fs.readFileSync('./database/group/badword.json'))
-const kotor = JSON.parse(fs.readFileSync('./src/kasar.json'))
-const autostick = JSON.parse(fs.readFileSync('./src/autosticker.json'))
 const antifirtex = JSON.parse(fs.readFileSync('./database/group/antifirtex.json'))
-const kickarea = JSON.parse(fs.readFileSync('./src/kickarea.json'))
-const setiker = JSON.parse(fs.readFileSync('./src/stik.json'))
-const videonye = JSON.parse(fs.readFileSync('./src/video.json'))
-const audionye = JSON.parse(fs.readFileSync('./src/audio.json'))
-const imagenye = JSON.parse(fs.readFileSync('./src/image.json'))
-const sewa = require('./functions/sewa')
-const afk = require('./functions/afk')
+const dataRevoke = JSON.parse(fs.readFileSync('./src/gc-revoked.json'))
+ const dataBanCtRevoke = JSON.parse(fs.readFileSync('./src/ct-revoked-banlist.json'))
  const afk = JSON.parse(fs.readFileSync('./database/afk.json'))
+const dataCtRevoke = JSON.parse(fs.readFileSync('./src/ct-revoked.json'))
 //const dataBanCtRevoke = JSON.parse(fs.readFileSync('./src/ct-revoked-banlist.json'))
 /*********** END LOAD ***********/
 // FUNCTION
@@ -404,21 +379,16 @@ bambang.on('group-participants-update', async (anu) => {
 
 	bambang.on('message-new', async (mek) => {
 		try {
-            const txt = mek.message.conversation
             if (!mek.message) return
 			if (mek.key && mek.key.remoteJid == 'status@broadcast') return
-			let infoMSG = JSON.parse(fs.readFileSync('./src/msg.data.json'))
-            infoMSG.push(JSON.parse(JSON.stringify(mek)))
-            fs.writeFileSync('./src/msg.data.json', JSON.stringify(infoMSG, null, 2))
-            const urutan_pesan = infoMSG.length
-            if (urutan_pesan === 5000) {
-      infoMSG.splice(0, 5000)
-      fs.writeFileSync('./src/msg.data.json', JSON.stringify(infoMSG, null, 2))
-    }
-            global.prefix
+			global.prefix
 			global.blocked
 			const content = JSON.stringify(mek.message)
 			const from = mek.key.remoteJid
+			let infoMSG = JSON.parse(fs.readFileSync('./src/msg.data.json'))
+                         infoMSG.push(JSON.parse(JSON.stringify(mek)))
+                         fs.writeFileSync('./src/msg.data.json', JSON.stringify(infoMSG, null, 2))
+                         const urutan_pesan = infoMSG.length
                         const type = Object.keys(mek.message)[0]
 			const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
 			const time = moment.tz('Asia/Jakarta').format('DD/MM HH:mm:ss')
@@ -446,6 +416,10 @@ bambang.on('group-participants-update', async (anu) => {
 			const groupDesc = isGroup ? groupMetadata.desc : ''
             const groupAdmins = isGroup ? getGroupAdmins(groupMembers) : ''
 
+                if (urutan_pesan === 5000) {
+      infoMSG.splice(0, 4300)
+      fs.writeFileSync('./src/msg.data.json', JSON.stringify(infoMSG, null, 2))
+    }
         cekafk(afk)
     if (urutan_pesan === 5000) {
       infoMSG.splice(0, 4300)
@@ -454,100 +428,156 @@ bambang.on('group-participants-update', async (anu) => {
        if (!publik) {
   }
             bambang.on('message-update', async (hurtz) => {
-	try {
-		const from = hurtz.key.remoteJid
-		const messageStubType = WA_MESSAGE_STUB_TYPES[hurtz.messageStubType] || 'MESSAGE'
-		const dataRevoke = JSON.parse(fs.readFileSync('./src/gc-revoked.json'))
-		const dataCtRevoke = JSON.parse(fs.readFileSync('./src/ct-revoked.json'))
-		const dataBanCtRevoke = JSON.parse(fs.readFileSync('./src/ct-revoked-banlist.json'))
-		sender = hurtz.key.fromMe ? benny.user.jid : hurtz.key.remoteJid.endsWith('@g.us') ? hurtz.participant : hurtz.key.remoteJid
-		const isRevoke = hurtz.key.remoteJid.endsWith('@s.whatsapp.net') ? true : hurtz.key.remoteJid.endsWith('@g.us') ? dataRevoke.includes(from) : false
-		const isCtRevoke = hurtz.key.remoteJid.endsWith('@g.us') ? true : dataCtRevoke.data ? true : false
-		const isBanCtRevoke = hurtz.key.remoteJid.endsWith('@g.us') ? true : !dataBanCtRevoke.includes(sender) ? true : false
-        if (sender == undefined) sender = benny.user.jid
+  try {
+
+  const from = hurtz.key.remoteJid
+    const messageStubType = WA_MESSAGE_STUB_TYPES[hurtz.messageStubType] || 'MESSAGE'
+    const sender = hurtz.key.fromMe ? bambang.user.jid : hurtz.key.remoteJid.endsWith('@g.us') ? hurtz.participant : hurtz.key.remoteJid
+    const isRevoke = hurtz.key.remoteJid.endsWith('@s.whatsapp.net') ? true : hurtz.key.remoteJid.endsWith('@g.us') ? dataRevoke.includes(from) : false
+    const isCtRevoke = hurtz.key.remoteJid.endsWith('@g.us') ? true : dataCtRevoke.data ? true : false
+    const isBanCtRevoke = hurtz.key.remoteJid.endsWith('@g.us') ? true : !dataBanCtRevoke.includes(sender) ? true : false
 if (messageStubType == 'REVOKE' && isRevoke) {
-	sender = hurtz.key.fromMe ? bambang.user.jid : hurtz.key.remoteJid.endsWith('@g.us') ? hurtz.participant : hurtz.key.remoteJid
-		if (sender == undefined) sender = benny.user.jid
-	try {
-					ppimg = await bambang.getProfilePicture(sender)
-				} catch {
-					ppimg = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
-				}
-				    buffer = await getBaper(ppimg)
-					const isGroup = hurtz.key.remoteJid.endsWith('@g.us') ? true : false
-                    const from = hurtz.key.remoteJid
-					const groupMetadata = isGroup ? await benny.groupMetadata(from) : ''
-					const groupMembers = isGroup ? groupMetadata.participants : ''
-					okok = []
-					for (let o of groupMembers) {
-						okok.push(o.jid)
-					}
-                    sender = hurtz.key.fromMe ? bambang.user.jid : hurtz.key.remoteJid.endsWith('@g.us') ? hurtz.participant : hurtz.key.remoteJid
-					if (sender == undefined) sender = bambang.user.jid
-                    let int
-                    let infoMSG = JSON.parse(fs.readFileSync('./src/.dat/msg.data.json'))
-                    const id_deleted = hurtz.key.id
-                    const conts = hurtz.key.fromMe ? benny.user.jid : benny.contacts[sender] || { notify: jid.replace(/@.+/, '') }
-                    const pushname = hurtz.key.fromMe ? bambang.user.name : conts.notify || conts.vname || conts.name || '-'
-                   if (pushname == undefined) pushname = '-'
-					for (let i = 0; i < infoMSG.length; i++) {
-                         if (infoMSG[i].key.id == id_deleted) {
-                              const dataInfo = infoMSG[i]
-                              const type = Object.keys(infoMSG[i].message)[0]
-                              const timestamp = infoMSG[i].messageTimestamp
-                              int = {
-                                   no: i,
-                                   type: type,
-                                   timestamp: timestamp,
-                                   data: dataInfo
+          const from = hurtz.key.remoteJid
+          console.log(`Status untuk grup : ${!isRevoke}\nStatus semua kontak : ${!isCtRevoke}\nStatus kontak dikecualikan : ${!isBanCtRevoke}`)
+      if (!isRevoke) return
+      if (!isCtRevoke) return
+      if (!isBanCtRevoke) return
+          const isGroup = hurtz.key.remoteJid.endsWith('@g.us') ? true : false
+          const sender = hurtz.key.fromMe ? bambang.user.jid : isGroup ? hurtz.participant : hurtz.key.remoteJid
+          let int
+          let infoMSG = JSON.parse(fs.readFileSync('./src/msg.data.json'))
+          const id_deleted = hurtz.key.id
+          const conts = hurtz.key.fromMe ? bambang.user.jid : bambang.contacts[sender] || { notify: jid.replace(/@.+/, '') }
+          const pushname = hurtz.key.fromMe ? bambang.user.name : conts.notify || conts.vname || conts.name || '-'
+          const opt4tag = {
+             contextInfo: { mentionedJid: [sender] }
+          }
+          for (let i = 0; i < infoMSG.length; i++) {
+             if (infoMSG[i].key.id == id_deleted) {
+                const dataInfo = infoMSG[i]
+                const type = Object.keys(infoMSG[i].message)[0]
+                const timestamp = infoMSG[i].messageTimestamp
+                int = {
+                   no: i,
+                   type: type,
+                   timestamp: timestamp,
+                   data: dataInfo
 
-                              }
-                         }
-                    }
-                    const index = Number(int.no)
-                    const body = int.type == 'conversation' ? infoMSG[index].message.conversation : int.type == 'extendedTextMessage' ? infoMSG[index].message.extendedTextMessage.text : int.type == 'imageMessage' ? infoMSG[index].message.imageMessage.caption : int.type == 'stickerMessage' ? 'Sticker' : int.type == 'audioMessage' ? 'Audio' : int.type == 'videoMessage' ? infoMSG[index].videoMessage.caption : infoMSG[index]
-                    const mediaData = int.type === 'extendedTextMessage' ? JSON.parse(JSON.stringify(int.data).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : int.data
-                    if (int.type == 'conversation' || int.type == 'extendedTextMessage') {
-                         const strConversation = `\*◪* *ANTIDELETE*\n*│*
-*│* *Nama* : ${pushname} ( @${sender.replace('@s.whatsapp.net', '')} )
-*│* *Tipe* : Text
-*│* *Waktu* : ${moment.unix(int.timestamp).format('HH:mm:ss DD/MM/YYYY')}
-*│* *Pesan* : ${body ? body : '-'}`
+                }
+             }
+          }
+          const index = Number(int.no)
+          const body = int.type == 'conversation' ? infoMSG[index].message.conversation : int.type == 'extendedTextMessage' ? infoMSG[index].message.extendedTextMessage.text : int.type == 'imageMessage' ? infoMSG[index].message.imageMessage.caption : int.type == 'stickerMessage' ? 'Sticker' : int.type == 'audioMessage' ? 'Audio' : int.type == 'videoMessage' ? infoMSG[index].videoMessage.caption : infoMSG[index]
+          const mediaData = int.type === 'extendedTextMessage' ? JSON.parse(JSON.stringify(int.data).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : int.data
+          if (int.type == 'conversation' || int.type == 'extendedTextMessage') {
+            var itsme = `${nomornye}@s.whatsapp.net`
+          var split = `${fake}`
+          const pingbro23 = {
+            contextInfo: {
+              participant: itsme,
+              quotedMessage: {
+                extendedTextMessage: {
+                  text: split,
+                }
+              }
+            }
+          }
+             const strConversation = `\`\`\`[ ☠ ] Terdeteksi pengapusan pesan
 
-                         bambang.sendMessage(from, strConversation, MessageType.text, { contextInfo: {mentionedJid: okok, isForwarded: true, forwardingScore: 300}, quoted: { "key": { "participant": `${numbernye}`, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": buffer, "mimetype": "application/octet-stream", "title": `${fake}`, "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
-                    } else if (int.type == 'stickerMessage') {
-                         const filename = `${sender.replace('@s.whatsapp.net', '')}-${moment().unix()}`
-                         const savedFilename = await benny.downloadAndSaveMediaMessage(int.data, `./src/${filename}`);
-                         const strConversation = `*◪* *ANTIDELETE*\n*│*\n*│* Nama: ${pushname}\n*│* Tag: @${sender.replace('@s.whatsapp.net', '')}\n*│* Tipe : Sticker\n*│* Waktu: ${moment.unix(int.timestamp).format('HH:mm:ss DD/MM/YYYY')}`
-				const buff = fs.readFileSync(savedFilename)
-				bambang.sendMessage(from, strConversation, MessageType.text, { contextInfo: {mentionedJid: [sender]}, quoted: { "key": { "participant": `${numbernye}`, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": buffer, "mimetype": "application/octet-stream", "title": `${fake}`, "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
-               bambang.sendMessage(from, buff, MessageType.sticker, { contextInfo: {mentionedJid: [sender]}, quoted: { "key": { "participant": `${numbernye}`, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": buffer, "mimetype": "application/octet-stream", "title": `${fake}`, "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
-               // console.log(stdout)
-				fs.unlinkSync(savedFilename)
+Nama : ${pushname} ( @${sender.replace('@s.whatsapp.net', '')} )
+Tipe : Text
+Waktu : ${moment.unix(int.timestamp).format('HH:mm:ss DD/MM/YYYY')}
+Pesan : ${body ? body : '-'}\`\`\`
+`
+             bambang.sendMessage(from, strConversation, MessageType.text, opt4tag,{quoted:hurtz})
+          } else if (int.type == 'stickerMessage') {
+             var itsme = `${nomornye}@s.whatsapp.net`
+          var split = `${fake}`
+          const pingbro23 = {
+            contextInfo: {
+              participant: itsme,
+              quotedMessage: {
+                extendedTextMessage: {
+                  text: split,
+                }
+              }
+            }
+          }
+             const filename = `${sender.replace('@s.whatsapp.net', '')}-${moment().unix()}`
+             const savedFilename = await bambang.downloadAndSaveMediaMessage(int.data, `./media/sticker/${filename}`);
+             const strConversation = `\`\`\`Terdeteksi ${pushname} menghapus pesan
 
-			} else if (int.type == 'imageMessage') {
-				const filename = `${sender.replace('@s.whatsapp.net', '')}-${moment().unix()}`
-				const savedFilename = await benny.downloadAndSaveMediaMessage(int.data, `./src/${filename}`);
-				const buff = fs.readFileSync(savedFilename)
-				const strConversation =  `*◪* *ANTIDELETE*\n*│*\n*│* Nama : ${pushname}\n*│* Tag: @${sender.replace('@s.whatsapp.net', '')}\n*│* Tipe : Image\n*│* Pesan: ${body ? body : '-'}\n*│* Waktu: ${moment.unix(int.timestamp).format('HH:mm:ss DD/MM/YYYY')}`
-                         bambang.sendMessage(from, buff, MessageType.image, { contextInfo: {mentionedJid: okok}, caption: strConversation, quoted: { "key": { "participant": `${numbernye}`, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": buffer, "mimetype": "application/octet-stream", "title": `${fake}`, "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
-                 fs.unlinkSync(savedFilename)
-			} else if (int.type == 'audioMessageMessage') {
-				const filename = `${sender.replace('@s.whatsapp.net', '')}-${moment().unix()}`
-				const savedFilename = await benny.downloadAndSaveMediaMessage(int.data, `./src/${filename}`);
-				const buff = fs.readFileSync(savedFilename)
-				const strConversation =  `*◪* *ANTIDELETE*\n*│*\n*│* Nama : ${pushname}\n*│* Tag: @${sender.replace('@s.whatsapp.net', '')}\n*│* Tipe : Audio\n*│* Pesan: ${body ? body : '-'}\n*│* Waktu: ${moment.unix(int.timestamp).format('HH:mm:ss DD/MM/YYYY')}`
-                         bambanv.sendMessage(from, buff, MessageType.audio, { contextInfo: {mentionedJid: okok}, filename: `${pushname}`, mimetype: 'audio/mp4', quoted: { "key": { "participant": `${numbernye}`, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": buffer, "mimetype": "application/octet-stream", "title": `${fake}`, "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
-                   fs.unlinkSync(savedFilename)
-                         
-                    }
-               }
-	} catch (e) {
-		console.log('Message : %s', color(e, 'green'))
-		// console.log(e)
-	}
+Nick : ( @${sender.replace('@s.whatsapp.net', '')} )
+Tipe : stiker
+Waktu : ${moment.unix(int.timestamp).format('HH:mm:ss DD/MM/YYYY')}\`\`\`
+`
+        const buff = fs.readFileSync(savedFilename)
+        bambang.sendMessage(from, strConversation, MessageType.text, opt4tag)
+        bambang.sendMessage(from, buff, MessageType.sticker, pingbro23,{quoted:hurtz})
+        // console.log(stdout)
+        fs.unlinkSync(savedFilename)
+
+      } else if (int.type == 'imageMessage') {
+        var itsme = `${nomornye}@s.whatsapp.net`
+          var split = `${fake}`
+          const pingbro22 = {
+            contextInfo: {
+              participant: itsme,
+              quotedMessage: {
+                extendedTextMessage: {
+                  text: split,
+                }
+              }
+            }
+          }
+        const filename = `${sender.replace('@s.whatsapp.net', '')}-${moment().unix()}`
+        const savedFilename = await bambang.downloadAndSaveMediaMessage(int.data, `./media/revoke/${filename}`);
+        const buff = fs.readFileSync(savedFilename)
+        const strConversation =  `\`\`\`Terdeteksi ${pushname} menghapus pesan
+
+Nick : ( @${sender.replace('@s.whatsapp.net', '')} )
+Tipe : gambar
+Waktu : ${moment.unix(int.timestamp).format('HH:mm:ss DD/MM/YYYY')}
+Pesan : ${body ? body : '-'}\`\`\`
+`
+             bambang.sendMessage(from, buff, MessageType.image, { quoted: hurtz,contextInfo: { mentionedJid: [sender] }, caption: strConversation ,quoted:hurtz})
+             fs.unlinkSync(savedFilename)
+      } else if (int.type == 'audioMessage') {
+
+        var itsme = `${nomornye}@s.whatsapp.net`
+
+          var split = `${fake}`
+          const pingbo22 = {
+            contextInfo: {
+              participant: itsme,
+              quotedMessage: {
+                extendedTextMessage: {
+                  text: split,
+                }
+              }
+            }
+          }
+        const filename = `${sender.replace('@s.whatsapp.net', '')}-${moment().unix()}`
+        const savedFilename = await bambang.downloadAndSaveMediaMessage(int.data, `./media/revoke/${filename}`);
+        const buff = fs.readFileSync(savedFilename)
+        const strConversation =  `\`\`\`Terdeteksi ${pushname} menghapus pesan
+
+Nick : ( @${sender.replace('@s.whatsapp.net', '')} )
+Tipe : Vn/audio massage
+Waktu : ${moment.unix(int.timestamp).format('HH:mm:ss DD/MM/YYYY')}
+Pesan : ${body ? body : '-'}\`\`\`
+`
+             bambang.sendMessage(from, buff, MessageType.audio, { contextInfo: { mentionedJid: [sender] }, caption: strConversation ,quoted:hurtz})
+             fs.unlinkSync(savedFilename)
+             
+          }
+
+         }
+  } catch (e) {
+    console.log('Message : %s', color(e, 'green'))
+    // console.log(e)
+  }
 })
-
            /************** SCURITY FEATURE ************/
             const isEventon = isGroup ? event.includes(from) : false
             const isRegistered = checkRegisteredUser(sender)
@@ -558,15 +588,11 @@ if (messageStubType == 'REVOKE' && isRevoke) {
 			const isNsfw = isGroup ? nsfw.includes(from) : false
 			const isSimi = isGroup ? samih.includes(from) : false
 			const isAntiLink = isGroup ? antilink.includes(from) : false
-			const isAutoSticker = isGroup ? autostick.includes(from) : false
-            const isKickArea = isGroup ? kickarea.includes(from) : false
-            const isBadWord = isGroup ? badword.includes(from) : false
-            const isVirus = isGroup ? virus.includes(from) : false
-            const isAntiFirtex= isGroup ? antifirtex.includes(from) : false
+			const isBadWord = isGroup ? badword.includes(from) : false
+                    const isAntiFirtex= isGroup ? antifirtex.includes(from) : false
 			const isOwner = ownerNumber.includes(sender)
 			const isImage = type === 'imageMessage'
-			const chats = type == 'conversation' || type == 'extendedTextMessage'
-            const isUrl = (url) => {
+			const isUrl = (url) => {
 			    return url.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/, 'gi'))
 			}
 			const reply = (teks) => {
@@ -604,66 +630,7 @@ if (messageStubType == 'REVOKE' && isRevoke) {
 		    fs.unlinkSync(filename)
 		});
 	    }
-			if (banChats == false) fake = 'Mr.Kingleo'
-			if (banChats == true) fake = 'SELFBOT'
-		const reply = (teks) => {
-            bambang.sendMessage(from, teks, text, { quoted: ben })
-		}
-		const cheat = (teks) => {
-			bambang.sendMessage(from, teks, text, { quoted: { "key": { "participant": `${numbernye}`, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": setthumb, "mimetype": "application/octet-stream", "title": `${fake}`, "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
-		}
-           const bisnis = (teks) => {
-		bambang.sendMessage(from, teks, text, { quoted: {
-    "key": {
-      "remoteJid": setgrup,
-	  "fromMe": false,
-	  "participant": numbernye,
-      "id": "0D5EAADD1166F55012EB42395DE58D61"
-    },
-    "message": {
-      "productMessage": {
-        "product": {
-          "productImage": {
-            "url": "https://mmg.whatsapp.net/d/f/AsFENZUsypKYO29kpNR2SrgcoBit6mDiApzGccFAPIAq.enc",
-            "mimetype": "image/jpeg",
-        "fileSha256": "iRrEuDPCvNe6NtOv/n+DARqlS1i2UbWqc25iw+qcwwo=",
-        "fileLength": "19247",
-        "height": 416,
-        "width": 416,
-        "mediaKey": "zvebSUI7DcnK9QHuUCJpNAtTsKai0MkvzrcNSYE5pHo=",
-        "fileEncSha256": "t6pd+X7iNV/bwtti0KaOOjGBfOVhxPpnwnTs/QnD0Uw=",
-        "directPath": "/v/t62.7118-24/29158005_1025181757972162_6878749864442314383_n.enc?oh=c97d5aea20257c3971a7248b339ee42d&oe=60504AC8",
-        "mediaKeyTimestamp": "1613162019",
-        "jpegThumbnail": setthumb
-		},
-          "productId": "3958959877488517",
-          "title": fake,
-          "description": "Kepoluah",
-          "currencyCode": "USD",
-          "priceAmount1000": "99999",
-          "retailerId": "Kepolu",
-          "url": "https://youtube.com/c/bennyhidayat",
-          "productImageCount": 2
-        },
-        "businessOwnerJid": from
-      }
-    },
-    "messageTimestamp": "1613442626",
-    "status": "PENDING"
-					}})
-	}
-		const sendMess = (hehe, teks) => {
-			bambang.sendMessage(hehe, teks, text, { quoted: { "key": { "participant": numbernye, "remoteJid": setgrup, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": setthumb, "mimetype": "application/octet-stream", "title": "_*BROADCAST*_", "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
-		}
-		const acak = (teks) => {
-			teks[Math.floor(Math.random() * teks.length)]
-		}
-		const sendPesan = (hehe, teks) => {
-			bambang.sendMessage(hehe, teks, text, { "contextInfo": {mentionedJid: [sender], "forwardingScore": 999,"isForwarded": true}, quoted: { "key": { "participant": numbernye, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": setthumb, "mimetype": "application/octet-stream", "title": "_Mr.Kingleo*_", "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
-		}
-            bambang.sendMessage(hehe, teks, text, { "contextInfo": {mentionedJid: [sender], "forwardingScore": 999,"isForwarded": true}, quoted: { "key": { "participant": numbernye, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": setthumb, "mimetype": "application/octet-stream", "title": "_Mr.Kingleo*_", "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
-		}
-           const mentions = (teks, memberr, id) => {
+			const mentions = (teks, memberr, id) => {
 				(id == null || id == undefined || id == false) ? bambang.sendMessage(from, teks.trim(), extendedText, {contextInfo: {"mentionedJid": memberr}}) : bambang.sendMessage(from, teks.trim(), extendedText, {quoted: mek, contextInfo: {"mentionedJid": memberr}})
 			}
 			const sendImage = (teks) => {
@@ -682,8 +649,8 @@ if (messageStubType == 'REVOKE' && isRevoke) {
             const checkId = getLevelingId(sender)
             try {
                 if (currentLevel === undefined && checkId === undefined) addLevelingId(sender)
-                const amountXp = Math.floor(Math.random() * 10) + 50
-                const requiredXp = 50 * (Math.pow(2, currentLevel) - 1)
+                const amountXp = Math.floor(Math.random() * 10) + 500
+                const requiredXp = 5000 * (Math.pow(2, currentLevel) - 1)
                 const getLevel = getLevelingLevel(sender)
                 addLevelingXp(sender, amountXp)
                 if (requiredXp <= getLevelingXp(sender)) {
@@ -752,151 +719,6 @@ if (messageStubType == 'REVOKE' && isRevoke) {
             }
         }
           
-//Anti virus function
-		if (isGroup && !isGroup && !mek.key.fromMe && isKasar && isBotGroupAdmins) {
-		    if (txt.length > 300) {
-				if (isGroupAdmins) return cheat('Kamu admin grup jadi ngga di kick :)')
-				var kic = `${sender.split("@")[0]}@s.whatsapp.net`
-				cheat(`「 *PETUGAS PEMBERSIH* 」\n\nKamu nakal si! Ngapain kirim virus? \nMaaf tapi aku harus mengeluarkan kamu...\nSelamat tingal~`)
-				 console.log(color('[KICK]', 'red'), color('Received a virus text!', 'yellow'))
-				 bambang.groupRemove(from, [kic])
-				}
-			}
-			
-			if (isGroup && !mek.key.fromMe && isVirus && isBotGroupAdmins) {
-		    if (txt.includes('tol')) {
-				if (isGroupAdmins) return cheat('Kamu admin grup jadi ngga di kick :)')
-				var kic = `${sender.split("@")[0]}@s.whatsapp.net`
-				 cheat(`「 *PETUGAS PEMBERSIH* 」\n\nKamu nakal si! Ngapain ngomong kotor? \nMaaf tapi aku harus mengeluarkan kamu...\nSelamat tingal~`)
-				 console.log(color('[KICK]', 'red'), color('Received a badword!', 'yellow'))
-				 benny.groupRemove(from, [kic])
-				}
-			}
-			
-			if (isGroup && !mek.key.fromMe && isVirus && isBotGroupAdmins) {
-		    if (txt.includes('anjing')) {
-				if (isGroupAdmins) return cheat('Kamu admin grup jadi ngga di kick :)')
-				var kic = `${sender.split("@")[0]}@s.whatsapp.net`
-				 cheat(`「 *PETUGAS PEMBERSIH* 」\n\nKamu nakal si! Ngapain ngomong kotor? \nMaaf tapi aku harus mengeluarkan kamu...\nSelamat tingal~`)
-				 console.log(color('[KICK]', 'red'), color('Received a badword!', 'yellow'))
-				 bambang.groupRemove(from, [kic])
-				}
-			}
-			
-			
-			if (isGroup && !mek.key.fromMe && isVirus && isBotGroupAdmins) {
-		    if (txt.includes('babi')) {
-				if (isGroupAdmins) return cheat('Kamu admin grup jadi ngga di kick :)')
-				var kic = `${sender.split("@")[0]}@s.whatsapp.net`
-				 cheat(`「 *PETUGAS PEMBERSIH* 」\n\nKamu nakal si! Ngapain ngomong kotor? \nMaaf tapi aku harus mengeluarkan kamu...\nSelamat tingal~`)
-				 console.log(color('[KICK]', 'red'), color('Received a badword!', 'yellow'))
-				 bambang.groupRemove(from, [kic])
-				}
-			}
-			
-			if (isGroup && !mek.key.fromMe && isVirus && isBotGroupAdmins) {
-		    if (txt.includes('tot')) {
-				if (isGroupAdmins) return cheat('Kamu admin grup jadi ngga di kick :)')
-				var kic = `${sender.split("@")[0]}@s.whatsapp.net`
-				 cheat(`「 *PETUGAS PEMBERSIH* 」\n\nKamu nakal si! Ngapain ngomong kotor? \nMaaf tapi aku harus mengeluarkan kamu...\nSelamat tingal~`)
-				 console.log(color('[KICK]', 'red'), color('Received a badword!', 'yellow'))
-				 bambang.groupRemove(from, [kic])
-				}
-			}
-			
-			if (isGroup && !mek.key.fromMe && isVirus && isBotGroupAdmins) {
-		    if (txt.includes('bokep')) {
-				if (isGroupAdmins) return cheat('Kamu admin grup jadi ngga di kick :)')
-				var kic = `${sender.split("@")[0]}@s.whatsapp.net`
-				 cheat(`「 *PETUGAS PEMBERSIH* 」\n\nKamu nakal si! Ngapain ngomong kotor? \nMaaf tapi aku harus mengeluarkan kamu...\nSelamat tingal~`)
-				 console.log(color('[KICK]', 'red'), color('Received a badword!', 'yellow'))
-				 bambang.groupRemove(from, [kic])
-				}
-			}
-			
-			if (isGroup && !mek.key.fromMe && isVirus && isBotGroupAdmins) {
-		    if (txt.includes('jing')) {
-				if (isGroupAdmins) return cheat('Kamu admin grup jadi ngga di kick :)')
-				var kic = `${sender.split("@")[0]}@s.whatsapp.net`
-				 cheat(`「 *PETUGAS PEMBERSIH* 」\n\nKamu nakal si! Ngapain ngomong kotor? \nMaaf tapi aku harus mengeluarkan kamu...\nSelamat tingal~`)
-				 console.log(color('[KICK]', 'red'), color('Received a badword text!', 'yellow'))
-				 bambang.groupRemove(from, [kic])
-				}
-			}
-			
-			if (isGroup && !mek.key.fromMe && isVirus && isBotGroupAdmins) {
-		    if (txt.includes('tit')) {
-				if (isGroupAdmins) return cheat('Kamu admin grup jadi ngga di kick :)')
-				var kic = `${sender.split("@")[0]}@s.whatsapp.net`
-				 cheat(`「 *PETUGAS PEMBERSIH* 」\n\nKamu nakal si! Ngapain ngomong kotor? \nMaaf tapi aku harus mengeluarkan kamu...\nSelamat tingal~`)
-				 console.log(color('[KICK]', 'red'), color('Received a badword!', 'yellow'))
-				 bambang.groupRemove(from, [kic])
-				}
-			}
-			
-			if (isGroup && !mek.key.fromMe && isVirus && isBotGroupAdmins) {
-		    if (txt.includes('bangsat')) {
-				if (isGroupAdmins) return cheat('Kamu admin grup jadi ngga di kick :)')
-				var kic = `${sender.split("@")[0]}@s.whatsapp.net`
-				 cheat(`「 *PETUGAS PEMBERSIH* 」\n\nKamu nakal si! Ngapain ngomong kotor? \nMaaf tapi aku harus mengeluarkan kamu...\nSelamat tingal~`)
-				 console.log(color('[KICK]', 'red'), color('Received a badword!', 'yellow'))
-				 bambang.groupRemove(from, [kic])
-				}
-			}
-			
-			
-			if (!mek.key.fromMe && txt.includes('benny')) {
-				if (mek.key.fromMe) return sendMess(`6289636006352@s.whatsapp.net`, `Dari wa.me/${botNumber.replace('@s.whatsapp.net', '')}\nKatanya: ${body.slice(1)}`)
-				sendMess(`6285656214208@s.whatsapp.net`, `*Nama* : ${pushname}\nwa.me/${sender.replace('@s.whatsapp.net', '')}\nKatanya: ${txt}`)
-				}
-			
-			if (!mek.key.fromMe && txt.includes('Benny')) {
-				if (mek.key.fromMe) return sendMess(`6289636006352@s.whatsapp.net`, `Dari wa.me/${botNumber.replace('@s.whatsapp.net', '')}\nKatanya: ${body.slice(1)}`)
-				sendMess(`6285656214208@s.whatsapp.net`, `*Nama* : ${pushname}\nwa.me/${sender.replace('@s.whatsapp.net', '')}\nKatanya: ${txt}`)
-				}
-					
-			
-			if (isGroup && !ben.key.fromMe && isVirus && isBotGroupAdmins) {
-		    if (txt.includes('goblok')) {
-				if (isGroupAdmins) return cheat('Kamu admin grup jadi ngga di kick :)')
-				var kic = `${sender.split("@")[0]}@s.whatsapp.net`
-				cheat(`「 *PETUGAS PEMBERSIH* 」\n\nKamu nakal si! Ngapain ngomong kotor? \nMaaf tapi aku harus mengeluarkan kamu...\nSelamat tingal~`)
-				 console.log(color('[KICK]', 'red'), color('Received a badword!', 'yellow'))
-				 bambang.groupRemove(from, [kic])
-				}
-			}
-			
-			if (isGroup && !mek.key.fromMe && isVirus && isBotGroupAdmins) {
-		    if (txt.includes('gblk')) {
-				if (isGroupAdmins) return cheat('Kamu admin grup jadi ngga di kick :)')
-				var kic = `${sender.split("@")[0]}@s.whatsapp.net`
-				 cheat(`「 *PETUGAS PEMBERSIH* 」\n\nKamu nakal si! Ngapain ngomong kotor? \nMaaf tapi aku harus mengeluarkan kamu...\nSelamat tingal~`)
-				 console.log(color('[KICK]', 'red'), color('Received a badword!', 'yellow'))
-				 bambang.groupRemove(from, [kic])
-				}
-			}
-			
-			if (isGroup && !mek.key.fromMe && isVirus && isBotGroupAdmins) {
-		    if (txt.includes('ajg')) {
-				if (isGroupAdmins) return cheat('Kamu admin grup jadi ngga di kick :)')
-				var kic = `${sender.split("@")[0]}@s.whatsapp.net`
-				 cheat(`「 *PETUGAS PEMBERSIH* 」\n\nKamu nakal si! Ngapain ngomong kotor? \nMaaf tapi aku harus mengeluarkan kamu...\nSelamat tingal~`)
-				 console.log(color('[KICK]', 'red'), color('Received a badword!', 'yellow'))
-				 bambang.groupRemove(from, [kic])
-				}
-			}
-			
-			if (isGroup && !mek.key.fromMe && isVirus && isBotGroupAdmins) {
-		    if (txt.includes('anjg')) {
-				if (isGroupAdmins) return cheat('Kamu admin grup jadi ngga di kick :)')
-				var kic = `${sender.split("@")[0]}@s.whatsapp.net`
-				 cheat(`「 *PETUGAS PEMBERSIH* 」\n\nKamu nakal si! Ngapain ngomong kotor? \nMaaf tapi aku harus mengeluarkan kamu...\nSelamat tingal~`)
-				 console.log(color('[KICK]', 'red'), color('Received a badword!', 'yellow'))
-				 bambang.groupRemove(from, [kic])
-				}
-			}
-			
-			
 // ANTI LINK GRUP
                	        if (mesejAnti.includes("://chat.whatsapp.com/")){
 		        if (!isGroup) return
@@ -956,12 +778,7 @@ if (!mek.key.remoteJid.endsWith('@g.us') && offline){
                         addafk(mek.key.remoteJid)
             heheh = ms(Date.now() - waktuafk)
             bambang.sendMessage(mek.key.remoteJid,`@6285656214208 lagi Offline!\n\n *Alasan :* ${alasanafk}\n *Sejak :* ${heheh.hours} Jam, ${heheh.minutes} Menit, ${heheh.seconds} Detik lalu\n\nSilahkan hubungi lagi nanti`, MessageType.text,{contextInfo:{ mentionedJid: ['6285656214208@s.whatsapp.net'],'stanzaId': "B826873620DD5947E683E3ABE663F263", 'participant': "0@s.whatsapp.net", 'remoteJid': 'status@broadcast', 'quotedMessage': {"imageMessage": {"caption": "*OFFLINE*", 'jpegThumbnail': fs.readFileSync('./jadi.jpeg')}}}})
-          if (isGroup && autojoin == true) {
-	if (txt.includes("://chat.whatsapp.com/")) {
-		console.log(color('[AUTO JOIN]', 'cyan'), color('BRING ME THE HORIZON 2011', 'yellow'))
-				 benny.query({
-                 json:["action", "invite", `${txt.replace('https://chat.whatsapp.com/','')}`]
-     }
+          }
         }
             }
           }
@@ -973,18 +790,15 @@ if (!mek.key.remoteJid.endsWith('@g.us') && offline){
 			
 			//detector media
 			const isMedia = (type === 'imageMessage' || type === 'videoMessage')
-		const isQuotedText = type === 'extendedTextMessage'
-		const isQuotedLink = type === 'extendedTextMessage' && content.includes('extendedTextMessage')
-		const isQuotedImage = type === 'extendedTextMessage' && content.includes('imageMessage')
-		const isQuotedVideo = type === 'extendedTextMessage' && content.includes('videoMessage')
-		const isQuotedAudio = type === 'extendedTextMessage' && content.includes('audioMessage')
-		const isQuotedSticker = type === 'extendedTextMessage' && content.includes('stickerMessage')
+			const isQuotedImage = type === 'extendedTextMessage' && content.includes('imageMessage')
+			const isQuotedVideo = type === 'extendedTextMessage' && content.includes('videoMessage')
+			const isQuotedSticker = type === 'extendedTextMessage' && content.includes('stickerMessage')
 			
 			//private chat message
 			if (!isGroup && isCmd) console.log('\x1b[1;31m~\x1b[1;37m>', '[\x1b[1;32mEXEC\x1b[1;37m]', time, color(command), 'from', color(sender.split('@')[0]), 'args :', color(args.length))
 			if (!isGroup && !isCmd) console.log('\x1b[1;31m~\x1b[1;37m>', '[\x1b[1;31mRECV\x1b[1;37m]', time, color('Message'), 'from', color(sender.split('@')[0]), 'args :', color(args.length))
-			 if (isOwner && mek.key.fromMe) console.log(color('Owner lewat', 'cyan'))
-         //group message
+			
+			//group message
 			if (isCmd && isGroup) console.log('\x1b[1;31m~\x1b[1;37m>', '[\x1b[1;32mEXEC\x1b[1;37m]', time, color(command), 'from', color(sender.split('@')[0]), 'in', color(groupName), 'args :', color(args.length))
 			if (!isCmd && isGroup) console.log('\x1b[1;31m~\x1b[1;37m>', '[\x1b[1;31mRECV\x1b[1;37m]', time, color('Message'), 'from', color(sender.split('@')[0]), 'in', color(groupName), 'args :', color(args.length))
 					 if (!mek.key.fromMe && banChats === true) return
@@ -1005,252 +819,7 @@ if (!mek.key.remoteJid.endsWith('@g.us') && offline){
           	banChats = false
           	bambang.sendMessage(from, `「 *PUBLIC-MODE* 」`, text,{quoted:mek})
           	break
-			  case 'wa.me':
-				  case 'wame':
-  bambang.updatePresence(from, Presence.composing) 
-      const palal = {
-          text: `「 SELF AND PUBLIC WHATSAPP 」\n\n_Request by_ : @${sender.split("@s.whatsapp.net")[0]}\n\nYour link WhatsApp : *https://wa.me/${sender.split("@s.whatsapp.net")[0]}*\n*Or ( / )*\n*https://api.whatsapp.com/send?phone=${sender.split("@")[0]}*`,
-          contextInfo: { mentionedJid: [sender] }
-    }
-    bambang.sendMessage(from, palal, text,{ caption: text,contextInfo: { participant: '0@s.whatsapp.net', quotedMessage: { conversation: '*_WA ME_*' } } }) 
-				break
-        case 'deface':
-if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-var gas = body.slice(8)
-					var linknya = gas.split("|")[0];
-					var titlenya = gas.split("|")[1];
-					var imgbb = require('imgbb-uploader')
-					run = getRandom('.jpeg')
-					encmedia = isQuotedImage ? JSON.parse(JSON.stringify(ben).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
-media = await bambang.downloadAndSaveMediaMessage(encmedia)
-ddatae = await imageToBase64(JSON.stringify(media).replace(/\"/gi,''))
-fs.writeFileSync(`${run}`, ddatae, 'base64')
-bambang.sendMessage(from, linknya, text, { title: "Hacked by Leo", thumbnail: fs.readFileSync(`./${run}`), quoted: {
-    "key": {
-	  "participant": numbernye,
-      "remoteJid": setgrup,
-      "fromMe": false,
-      "id": "B391837A58338BA8186C47E51FFDFD4A"
-    },
-    "message": {
-      "documentMessage": {
-       "jpegThumbnail": setthumb,
-	  "mimetype": "application/octet-stream",
-        "title": "_*Mr.kingleo*_",
-        "fileLength": "36",
-        "pageCount": 0,
-        "fileName": `${fake}`
-      }
-    },
-    "messageTimestamp": "1614069378",
-    "status": "PENDING"
-  }
-					})
-					break
-       case 'hekweb':
-if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-var gas = body.slice(8)
-if (isQuotedImage) {
-					var linknya = gas.split("|")[0];
-					var titlenya = gas.split("|")[1];
-					var descnya = gas.split("|")[2];
-					var jadinya = gas.split("|")[3];
-					var imgbb = require('imgbb-uploader')
-			 		run = getRandom('.jpeg')
-					encmedia = isQuotedImage ? JSON.parse(JSON.stringify(ben).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
-media = await bambang.downloadAndSaveMediaMessage(encmedia)
-ddatae = await imageToBase64(JSON.stringify(media).replace(/\"/gi,''))
-bambang.sendMessage(from, {text: `${linknya}`, matchedText: `${linknya}`, canonicalUrl: `${jadinya}`, description: `${descnya}`, title: `${titlenya}`, jpegThumbnail: ddatae}, 'extendedTextMessage', {detectLinks: false})
-} else if (isQuotedSticker) {
-	var linknya = body.slice(8)
-	encmedia = JSON.parse(JSON.stringify(ben).replace('quotedM','m')).message.extendedTextMessage.contextInfo
-	            media = await bambang.downloadAndSaveMediaMessage(encmedia)
-				anu = fs.readFileSync(media)
-				bambang.sendMessage(from, {text: `${linknya}`, matchedText: `${linknya}`, canonicalUrl: `https://youtube.com/c/bennyhidayat`, description: `Hacked by ${pushname}`, title: `Terhemked :v`, jpegThumbnail: anu}, 'extendedTextMessage', {detectLinks: false})
-			} else if (!isQuotedImage) {
-				try {
-					ppimg = await bambang.getProfilePicture(sender)
-				} catch {
-					ppimg = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
-				}
-				ddatae = await imageToBase64(JSON.stringify(ppimg).replace(/\"/gi,''))
-				bambang.sendMessage(from, {text: `https://${gas}.com`, matchedText: `https://${gas}.com`, canonicalUrl: `https://${gas}.com`, description: `Hacked by ${pushname}`, title: `Terhemked :v`, jpegThumbnail: ddatae}, 'extendedTextMessage', {detectLinks: false})
-			}
-break
-        case 'rumus':
-									if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-									if (!Number(args[1])) return reply('Nomor harus berupa angka!')
-									if (args[0] == 'persegi') {
-									     entah = args[1]
-                    imni = await rumus.datar.keliling.persegi(entah, true)
-					console.log(imni)
-                    cheat(imni) 
-									} else if (args[0] == 'segitiga') {
-										entah = body.slice
-                    imni = await rumus.datar.keliling.segitiga(entah, true)
-					console.log(imni)
-                    cheat(imni) 
-									}
-                    break
-         case 'bilangangka':
-                  case 'angkabilang':
-					if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-					if (!Number(args[0])) return reply('Angkanya mana?')
-                    entah = body.slice(13)
-                    imni = await angkab(entah)
-                    cheat(`*${imni}*`)
-                    break
-        case 'kickbot':
-					members_id = []
-					for (let mem of groupMembers){
-					members_id.push(mem.jid)
-					console.log(mem)
-					if (pushname.includes('BOT')) {
-						reply('Terdeteksi ada bot disini segera di kick!')
-					anu = `${sender.split("@")[0]}`
-				bambang.groupRemove(from, [anu])
-            }
-        }
-        break
-    case 'fakethumb':
-  case 'fakethumbnail':
-  if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-  if (!isQuotedImage) return reply('Reply gambarnya!')
-				if ((isMedia || isQuotedImage) && args.length == 0) 
-ger = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
-media = await bambang.downloadAndSaveMediaMessage(ger)
-bambang.sendMessage(from, fs.readFileSync(media), image, {thumbnail: fs.readFileSync("./src/bokep.jpg")})
-break
-case 'stickfakethumb':
-  if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-  if (!isQuotedSticker) return reply('Reply stickernya!') 
-ger = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
-media = await bambang.downloadAndSaveMediaMessage(ger)
-angel = fs.readFileSync("./src/bokep.jpg")
-base64 = angel.toString('base64')
-bambang.sendMessage(from, fs.readFileSync(media), sticker, {jpegThumbnail: base64})
-break
- case 'sendfakethumb':
- if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
- if (!isQuotedImage) return reply('Reply gambarnya!')
-			if (isMedia || isQuotedImage)
-			if (args[0].includes('-')) return reply('Block contoh: 6285656214208')
-			if (args[0].includes('+')) return reply('Block contoh: 6285656214208')
-			if (args[0].includes(' ')) return reply('Block contoh: 6285656214208')
-			targeten = `${args[0]}@s.whatsapp.net`
-ger = isQuotedImage ? JSON.parse(JSON.stringify(ben).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
-media = await bambang.downloadAndSaveMediaMessage(ger)
-bambang.sendMessage(targeten, fs.readFileSync(media), image, {thumbnail: fs.readFileSync("./src/bokep.jpg")})
-break
-  case 'setthumb':
-  case 'setthumbnail':
-  if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-				    if (!isOwner && !mek.key.fromMe) return bambang.sendMessage(from, `*Maaf @${sender.split('@')[0]} Perintah ${prefix2}${command} tidak ada di list ${prefix2}menu!*`, text, { contextInfo: {mentionedJid: [sender]}, quoted: { "key": { "participant": numbernye, "remoteJid": setgrup, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": setthumb, "mimetype": "application/octet-stream","title": "_*Mr.Kingleo*_", "fileLength": "36", "pageCount": 0, "fileName": `${fake}`}}, "messageTimestamp": "1614069378", "status": "PENDING"}})
-			if ((isMedia || isQuotedImage) && args.length == 0) {
-ger = isQuotedImage ? JSON.parse(JSON.stringify(ben).replace('quotedM','m')).message.extendedTextMessage.contextInfo : ben
-const ehgmediab = await bambang.downloadAndSaveMediaMessage(ger)
-nihiyab = await imageToBase64(ehgmediab)
-setthumb = `${nihiyab}` 
-					cheat(`*Sukses mengubah thumbnail fake reply*`)
-			} else if (isQuotedSticker) {
-				encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
-	            media = await bambang.downloadAndSaveMediaMessage(encmedia)
-				anu = fs.readFileSync(media)
-			setthumb = anu
-			cheat(`*Sukses mengubah thumbnail fake reply*`)
-			}
-					break
-  case 'join':
-					bambang.query({
-json:["action", "invite", `${args[0].replace('https://chat.whatsapp.com/','')}`]
-})
-reply('Berhasil Gabung ke grup')
-break
-case 'addvn':
-if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-	if (!isQuotedAudio) return cheat('Reply vnnya!')
-	svst = body.slice(7)
-	if (!svst) return cheat('Nama audionya apa?')
-	boij = JSON.parse(JSON.stringify(ben).replace('quotedM','m')).message.extendedTextMessage.contextInfo
-	delb = await bambang.downloadMediaMessage(boij)
-	audionye.push(`${svst}`)
-	fs.writeFileSync(`./src/audio/${svst}.mp3`, delb)
-	fs.writeFileSync('./src/audio.json', JSON.stringify(audionye))
-	benny.sendMessage(from, `Sukses Menambahkan Vn\nCek dengan cara ${prefix2}listvn`, MessageType.text, {quoted: ben})
-	break
-case 'getvn':
-if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-	namastc = body.slice(7)
-	buffer = fs.readFileSync(`./src/audio/${namastc}.mp3`)
-	bambang.sendMessage(from, buffer, audio, {mimetype: 'audio/mp4', quoted: mek, ptt: true})
-	break
-case 'listvn':
-case 'vnlist':
-if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-	teks = 'List Vn:\n'
-	for (let awokwkwk of audionye) {
-	teks += `- ${awokwkwk}\n`
-	}
-	teks += `Total : ${audionye.length}`
-	bambang.sendMessage(from, teks.trim(), extendedText, {quoted: mek, contextInfo: {"mentionedJid": audionye}})
-	break
-case 'addimage':
-if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-	if (!isQuotedImage) return cheat('Reply imagenya!')
-	svst = body.slice(10)
-	if (!svst) return cheat('Nama imagenya apa?')
-	boij = JSON.parse(JSON.stringify(ben).replace('quotedM','m')).message.extendedTextMessage.contextInfo
-	delb = await bambang.downloadMediaMessage(boij)
-	imagenye.push(`${svst}`)
-	fs.writeFileSync(`./src/image/${svst}.jpeg`, delb)
-	fs.writeFileSync('./src/image.json', JSON.stringify(imagenye))
-	benny.sendMessage(from, `Sukses Menambahkan Video\nCek dengan cara ${prefix2}listimage`, MessageType.text, {quoted: mek})
-	break
-case 'getimage':
-if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-	namastc = body.slice(10)
-	buffer = fs.readFileSync(`./src/image/${namastc}.jpeg`)
-	bambang.sendMessage(from, buffer, image, {quoted: mek, caption: `*Result From Database* : ${namastc}.jpeg`})
-	break
-case 'imagelist':
-case 'listimage':
-if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-	teks = 'List Video:\n'
-	for (let awokwkwk of imagenye) {
-	teks += `- ${awokwkwk}\n`
-	}
-	teks += `Total : ${imagenye.length}`
-	bambang.sendMessage(from, teks.trim(), extendedText, {quoted: mek, contextInfo: {"mentionedJid": imagenye}})
-	break
-case 'addvideo':
-if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-	if (!isQuotedVideo) return cheat('Reply videonya!')
-	svst = body.slice(10)
-	if (!svst) return cheat('Nama videonya apa?')
-	boij = JSON.parse(JSON.stringify(ben).replace('quotedM','m')).message.extendedTextMessage.contextInfo
-	delb = await bambang.downloadMediaMessage(boij)
-	videonye.push(`${svst}`)
-	fs.writeFileSync(`./src/video/${svst}.mp4`, delb)
-	fs.writeFileSync('./src/video.json', JSON.stringify(videonye))
-	bambang.sendMessage(from, `Sukses Menambahkan Video\nCek dengan cara ${prefix2}listvideo`, MessageType.text, {quoted: mek})
-	break
-case 'getvideo':
-if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-	namastc = body.slice(10)
-	buffer = fs.readFileSync(`./src/video/${namastc}.mp4`)
-	bambang.sendMessage(from, buffer, video, {mimetype: 'video/mp4', quoted: mek})
-	break
-case 'listvideo':
-case 'videolist':
-if (!isRegistered && !mek.key.fromMe) return cheat(ind.only.Registered)
-	teks = 'List Video:\n'
-	for (let awokwkwk of videonye) {
-	teks += `- ${awokwkwk}\n`
-	}
-	teks += `Total : ${videonye.length}`
-	bambang.sendMessage(from, teks.trim(), extendedText, {quoted: mek, contextInfo: {"mentionedJid": videonye}})
-	break
-     case 'asupan+62': // Update By RzkyO & onlydevXSec404
+			  case 'asupan+62': // Update By RzkyO & onlydevXSec404
 				reply(`[❕] Loading`)
 				anu = await fetchJson(`https://onlydevcity.herokuapp.com/api/asupan?apikey=MRKINGLEO606`, {method: 'get'})
 				buffer = await getBuffer(anu.result.url)
@@ -5313,7 +4882,7 @@ break
 					case 'blocklist':
 					teks = 'List Beban Kontak :\n'
 					for (let block of blocked) {
-						teks += `➢ @${block.split('@')[0]}\n`
+						teks += `*╠❏* @${block.split('@')[0]}\n`
 					}
 					teks += `Total : ${blocked.length}`
 					bambang.sendMessage(from, teks.trim(), extendedText, {quoted: mek, contextInfo: {"mentionedJid": blocked}})
@@ -5710,7 +5279,6 @@ try {
 				} catch {
 					ppimg = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
 				}
-	var itsme = `${numbernye}@s.whatsapp.net`
 	spek = await bambang.user.phone
 	mymom = []
 	for (let o of _level) {
@@ -5721,9 +5289,526 @@ const ini_xp  = 5000 * (Math.pow(2, getLevelingLevel(sender)) - 1)
                    var bulanpuasa = new Date('2021','03','12').valueOf()
                   tungmun = moment(bulanpuasa - Date.now()).format('DD [Hari], HH [Jam], mm [Menit], ss [Detik]')
                    var punya_wa = "0@s.whatsapp.net"
+				   var spek = bambang.user.phone
                     var ini_text = "MR.KINGLEOBOT"
                     var buffer = await getBuffer("https://i.ibb.co/fYLmd2t/20210326-173357.jpg")
-benny.sendMessage(from, {text: ind.menu(pushname, prefix, getLevelingLevel, getLevelingXp, sender, ini_xp, _registered, ini_uangku), matchedText: `https://api-self.herokuapp.com`, canonicalUrl: `https://api-self.herokuapp.com`, description: `${menunye}`, title: `Rest APIs`, jpegThumbnail: buffer}, 'extendedTextMessage', {contextInfo: {mentionedJid: [sender, botNumber], isForwarded: true, forwardingScore: 999}, detectLinks: true, quoted: { "key": { "participant": `${numbernye}`, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": setthumb, "mimetype": "application/octet-stream", "title": `${fake}`, "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
+					menunya = `
+*╔❏* *USER*
+*╠❏* *Nama* : ${pushname}
+*╠❏* *Nomer* : wa.me/${sender.split("@")[0]}
+*╠❏* *Uang mu* : Rp${ini_uangku}
+*╠❏* *XP* : ${getLevelingXp(sender)}
+*╠❏* *Level* : ${getLevelingLevel(sender)}
+*╠❏* *User register* : ${_registered.length}
+*╠❏*Status* : ${isOwner ? 'Owner' : 'User'}
+*╠❏*Road to Ramadhan*
+*╚❏*${tungmun}Hari lagi..*
+*╔❏* *INFOMASI BOT*
+*╠❏* Name : ${bambang.user.name}
+*╠❏* Browser : ${bambang.browserDescription[1]}
+*╠❏* Server : ${bambang.browserDescription[0]}
+*╠❏* Version : ${bambang.browserDescription[2]}
+*╠❏* Speed : ${process.uptime()}
+*╠❏* Ver : Termux
+*╠❏* Prefix : 「 ${prefix} 」
+*╠❏* WA Version : ${spek.wa_version}
+*╠❏* Device : ${spek.device_manufacturer}
+*╠❏* Version : ${spek.os_version}
+*╠❏* Total user : ${_registered.length}
+╰──── ⸨ *👑MR.KINGLEOBOT👑* ⸩  ⊰─════╯
+
+*╔❏* *MAKER MENU*
+*╠❏* *${prefix}sticker* 
+*╠❏* *${prefix}semoji* (reply stiker emot)
+*╠❏* *${prefix}attp* (teks)
+*╠❏* *${prefix}ttp2* (teks)
+*╠❏* *${prefix}ttp3* (teks)
+*╠❏* *${prefix}itext* (teks)
+*╠❏* *${prefix}telesticker*
+*╠❏*  *${prefix}trigger* (gunakan image)
+*╠❏*  *${prefix}wasted* (gunakan image)
+*╠❏*  *${prefix}nightbeach* (reply image)
+*╠❏*  *${prefix}sketch* (reply image)
+*╠❏*  *${prefix}linephoto* (reply image)
+*╠❏*  *${prefix}laptop* (reply image)
+*╠❏*  *${prefix}gtav* (reply image)
+*╠❏*  *${prefix}gay* (reply image)
+*╠❏*  *${prefix}wanted* (reply image)
+*╠❏*  *${prefix}crossgun* (reply image)
+*╠❏*  *${prefix}raindrop* (reply image)
+*╠❏*  *${prefix}bakar* (reply image)
+*╠❏*  *${prefix}arcade8bit* (teks teks)
+*╠❏*  *${prefix}avatarwolf2* (teks&teks)
+*╠❏*  *${prefix}avatarwolf* (teks&teks)
+*╠❏*  *${prefix}valorantbanner* 
+*╠❏*  *${prefix}juventusshirt* (nama&angka)
+*╠❏*  *${prefix}vintage*
+*╠❏*  *${prefix}editorberkelas*
+*╠❏*  *${prefix}api*
+*╠❏*  *${prefix}air*
+*╠❏*  *${prefix}advanceglow*
+*╠❏*  *${prefix}makequote*
+*╠❏*  *${prefix}romance*
+*╠❏*  *${prefix}kunci*
+*╠❏*  *${prefix}kopi*
+*╠❏*  *${prefix}jokerlogo*
+*╠❏*  *${prefix}ocr*
+*╠❏*  *${prefix}shadow*
+*╠❏*  *${prefix}snow3d*
+*╠❏*  *${prefix}smoke*
+*╠❏*  *${prefix}shine*
+*╠❏*  *${prefix}steel*
+*╠❏*  *${prefix}sklet*
+*╠❏*  *${prefix}starsnight*
+*╠❏*  *${prefix}strawberry*
+*╠❏*  *${prefix}silktext*
+*╠❏*  *${prefix}slide*
+*╠❏*  *${prefix}steel3d* (teks teks)
+*╠❏*  *${prefix}space* (teks teks)
+*╠❏*  *${prefix}summer*
+*╠❏*  *${prefix}summer3d*
+*╠❏*  *${prefix}summersand*
+*╠❏*  *${prefix}sandsummer*
+*╠❏*  *${prefix}sandengraved*
+*╠❏*  *${prefix}sandwriting*
+*╠❏*  *${prefix}splaybutton*
+*╠❏*  *${prefix}rosegold*
+*╠❏*  *${prefix}rainbow*
+*╠❏*  *${prefix}roadwarning*
+*╠❏*  *${prefix}deluxesilver*
+*╠❏*  *${prefix}icecold*
+*╠❏*  *${prefix}luxury*
+*╠❏*  *${prefix}cup*
+*╠❏*  *${prefix}cup1*
+*╠❏*  *${prefix}cparty*
+*╠❏*  *${prefix}crismes*
+*╠❏*  *${prefix}cml*
+*╠❏*  *${prefix}candy*
+*╠❏*  *${prefix}coffe*
+*╠❏*  *${prefix}colong* (reply stiker)
+*╠❏*  *${prefix}cloudtext*
+*╠❏*  *${prefix}carvedwood*
+*╠❏*  *${prefix}codwarzone* (teks&teks)
+*╠❏*  *${prefix}wallgravity* (teks teks)
+*╠❏*  *${prefix}watercolor*
+*╠❏*  *${prefix}wooden3d*
+*╠❏*  *${prefix}woodenboard*
+*╠❏*  *${prefix}wetglass*
+*╠❏*  *${prefix}wolfmetal*
+*╠❏*  *${prefix}writegalacy*
+*╠❏*  *${prefix}underwater*
+*╠❏*  *${prefix}multicolor3d*
+*╠❏*  *${prefix}luyal*
+*╠❏*  *${prefix}lovemake*
+*╠❏*  *${prefix}luxurygold*
+*╠❏*  *${prefix}lighttext*
+*╠❏*  *${prefix}toxic*
+*╠❏*  *${prefix}thunder*
+*╠❏*  *${prefix}thenight*
+*╠❏*  *${prefix}textdaun*
+*╠❏*  *${prefix}textcake*
+*╠❏*  *${prefix}textbyname*
+*╠❏*  *${prefix}tolol* (teks)
+*╠❏*  *${prefix}toimg* (reply sticker)
+*╠❏*  *${prefix}balon*
+*╠❏*  *${prefix}bokeh*
+*╠❏*  *${prefix}box3d*
+*╠❏*  *${prefix}birthdaycake*
+*╠❏*  *${prefix}battlefield4* (teks teks)
+*╠❏*  *${prefix}ballonmaker* (teks&teks)
+*╠❏*  *${prefix}beautifulflower*
+*╠❏*  *${prefix}breakwall*
+*╠❏*  *${prefix}butterfly*
+*╠❏*  *${prefix}burnpaper*
+*╠❏*  *${prefix}blackpink*
+*╠❏*  *${prefix}bloodfrosted*
+*╠❏*  *${prefix}hpyn*
+*╠❏*  *${prefix}hbd*
+*╠❏*  *${prefix}heartshaped*
+*╠❏*  *${prefix}halloween*
+*╠❏*  *${prefix}hartatahta*
+*╠❏*  *${prefix}hologram*
+*╠❏*  *${prefix}holographic*
+*╠❏*  *${prefix}hororblood*
+*╠❏*  *${prefix}herrypoter*
+*╠❏*  *${prefix}pagar*
+*╠❏*  *${prefix}pupycute*
+*╠❏*  *${prefix}pubglogo teks | teks*
+*╠❏*  *${prefix}pornhub teks&teks*
+*╠❏*  *${prefix}paperlonglass*
+*╠❏*  *${prefix}narutobanner*
+*╠❏*  *${prefix}ninjalogo* (teks&teks)
+*╠❏*  *${prefix}newyearcard*
+*╠❏*  *${prefix}nulis* (nama&kelas&teks)
+*╠❏*  *${prefix}nulis2*
+*╠❏*  *${prefix}nulis3* (nama&kelas&teks)
+*╠❏*  *${prefix}nature*
+*╠❏*  *${prefix}nature3d*
+*╠❏*  *${prefix}noeltext*
+*╠❏*  *${prefix}neon*
+*╠❏*  *${prefix}genmeme* (teks&teks)
+*╠❏*  *${prefix}grandi*
+*╠❏*  *${prefix}glitch* (teks&teks)
+*╠❏*  *${prefix}glowneon*
+*╠❏*  *${prefix}galaxywallpaper*
+*╠❏*  *${prefix}galaxybat*
+*╠❏*  *${prefix}galaxstyle*
+*╠❏*  *${prefix}glossychrome*
+*╠❏*  *${prefix}glittergold*
+*╠❏*  *${prefix}goldplay*
+*╠❏*  *${prefix}goodlooking*
+*╠❏*  *${prefix}goodboy*
+*╠❏*  *${prefix}goodgirl*
+*╠❏*  *${prefix}greenbush*
+*╠❏*  *${prefix}greenneon*
+*╠❏*  *${prefix}gamelogo*
+*╠❏*  *${prefix}futureneon*
+*╠❏*  *${prefix}flamming*
+*╠❏*  *${prefix}fireworksparkle*
+*╠❏*  *${prefix}firework*
+*╠❏*  *${prefix}freefire*
+*╠❏*  *${prefix}logoepep*
+*╠❏*  *${prefix}logoepep2*
+*╠❏*  *${prefix}logoepep3*
+*╠❏*  *${prefix}logoepep4*
+*╠❏*  *${prefix}lionlogo* (teks teks)
+*╠❏*  *${prefix}minion*
+*╠❏*  *${prefix}metallogo*
+*╠❏*  *${prefix}metaldark*
+*╠❏*  *${prefix}metalteks*
+*╠❏*  *${prefix}mgalax*
+*╠❏*  *${prefix}matrix*
+*╚❏*  *${prefix}marvelstudio* (teks teks)
+
+*╔❏* *FUN MENU*
+*╠❏*  *${prefix}mining*
+*╠❏*  *${prefix}bisakah*
+*╠❏*  *${prefix}kapankah*
+*╠❏*  *${prefix}apakah*
+*╠❏*  *${prefix}seberapagay*
+*╠❏*  *${prefix}rate*
+*╠❏*  *${prefix}truth*
+*╠❏*  *${prefix}dare*
+*╠❏*  *${prefix}hobby*
+*╠❏*  *${prefix}fitnah*
+*╠❏*  *${prefix}pasangan*
+*╠❏*  *${prefix}ntahlah*
+*╠❏*  *${prefix}slap*
+*╠❏*  *${prefix}cerpen*
+*╠❏*  *${prefix}ceritahorror*
+*╠❏*  *${prefix}hemkel*
+*╠❏*  *${prefix}katadoi*
+*╠❏*  *${prefix}katakatadilan*
+*╠❏*  *${prefix}katailham*
+*╠❏*  *${prefix}katabucin*
+*╠❏*  *${prefix}katabucin2*
+*╠❏*  *${prefix}katacinta*
+*╠❏*  *${prefix}katabijak*
+*╠❏*  *${prefix}qoutes*
+*╠❏*  *${prefix}caklontong*
+*╠❏*  *${prefix}family100*
+*╠❏*  *${prefix}tebakin*
+*╠❏*  *${prefix}kbbi*
+*╠❏*  *${prefix}dadu*
+*╚❏*  *${prefix}artinama*
+
+*╔❏* *ANIME MENU*
+*╠❏*  *${prefix}animeboy*
+*╠❏*  *${prefix}animegirl*
+*╠❏*  *${prefix}animesaran*
+*╠❏*  *${prefix}menherachan*
+*╠❏*  *${prefix}osakana*
+*╠❏*  *${prefix}animesaran2*
+*╠❏*  *${prefix}husbu2*
+*╠❏*  *${prefix}anime*
+*╠❏*  *${prefix}wallnime2*
+*╠❏*  *${prefix}kusonime*
+*╠❏*  *${prefix}kusonimesearch*
+*╠❏*  *${prefix}otakudesu*
+*╠❏*  *${prefix}otakudesusearch*
+*╠❏*  *${prefix}trap*
+*╠❏*  *${prefix}animefanart*
+*╠❏*  *${prefix}megumin*
+*╠❏*  *${prefix}shinobu*
+*╠❏*  *${prefix}baka*
+*╠❏*  *${prefix}eroyuri*
+*╠❏*  *${prefix}happy*
+*╠❏*  *${prefix}dance*
+*╠❏*  *${prefix}neko3*
+*╠❏*  *${prefix}smile*
+*╠❏*  *${prefix}wallpaper*
+*╠❏*  *${prefix}slapnime*
+*╠❏*  *${prefix}shota*
+*╠❏*  *${prefix}sagiri*
+*╠❏*  *${prefix}femdom*
+*╠❏*  *${prefix}waifukawai*
+*╠❏*  *${prefix}kuni*
+*╠❏*  *${prefix}nsfwloli3*
+*╠❏*  *${prefix}kitsune*
+*╠❏*  *${prefix}yuri*
+*╠❏*  *${prefix}yaoi*
+*╠❏*  *${prefix}wancak*
+*╠❏*  *${prefix}quotesnime*
+*╠❏*  *${prefix}waifu2*
+*╠❏*  *${prefix}bj*
+*╠❏*  *${prefix}boruto*
+*╠❏*  *${prefix}rize*
+*╠❏*  *${prefix}kaneki*
+*╠❏*  *${prefix}kemonomimi*
+*╠❏*  *${prefix}holo*
+*╠❏*  *${prefix}naruto*
+*╠❏*  *${prefix}amv*
+*╠❏*  *${prefix}minato* 
+*╠❏*  *${prefix}gecg*
+*╠❏*  *${prefix}avatar*
+*╠❏*  *${prefix}miku*
+*╠❏*  *${prefix}kurumi*
+*╠❏*  *${prefix}hinata*
+*╠❏*  *${prefix}sasuke*
+*╠❏*  *${prefix}sakura*
+*╠❏*  *${prefix}akura*
+*╠❏*  *${prefix}itori*
+*╠❏*  *${prefix}touka*
+*╠❏*  *${prefix}rem*
+*╠❏*  *${prefix}goku*
+*╠❏*  *${prefix}chika*
+*╠❏*  *${prefix}peluk*
+*╠❏*  *${prefix}smile*
+*╠❏*  *${prefix}nangis*
+*╠❏*  *${prefix}happy*
+*╚❏*  *${prefix}slapnime*
+
+*╔❏* *ISLAM MENU*
+*╠❏*  *${prefix}quran*
+*╠❏*  *${prefix}alquranaudio*
+*╠❏*  *${prefix}listsurah*
+*╠❏*  *${prefix}doaharian*
+*╠❏*  *${prefix}asmaulhusna*
+*╠❏*  *${prefix}niatsholat*
+*╠❏*  *${prefix}bacaansholat*
+*╠❏*  *${prefix}jadwalsholat*
+*╠❏*  *${prefix}kisahnabi*
+*╠❏*  *${prefix}tahlil*
+*╠❏*  *${prefix}ayatkursi*
+*╚❏*  *${prefix}hadits*
+
+*╔❏* *ASUPAN MENU*
+*╠❏*  *${prefix}asupan*
+*╠❏*  *${prefix}asupan+62*
+*╠❏*  *${prefix}asupanrana*
+*╠❏*  *${prefix}asupanamel*
+*╠❏*  *${prefix}asupankaia*
+*╠❏*  *${prefix}asupanuna*
+*╠❏*  *${prefix}asupanjung*
+*╠❏*  *${prefix}asupangea*
+*╠❏*  *${prefix}asupansalwa*
+*╠❏*  *${prefix}asupanruby*
+*╚❏*  *${prefix}storyepep*
+
+*╔❏* *QUOTES MENU*
+*╠❏*  *${prefix}Quotesislami*
+*╠❏*  *${prefix}Quotesnasehat*
+*╚❏*  *${prefix}Quotesmotivasi
+
+*╔❏* *MEDIA MENU*
+*╠❏*  *${prefix}jadwaltv*
+*╠❏*  *${prefix}igdl*
+*╠❏*  *${prefix}fbdl*
+*╠❏*  *${prefix}pixiv*
+*╠❏*  *${prefix}pixivdl*
+*╠❏*  *${prefix}wait*
+*╠❏*  *${prefix}tiktoknowm*
+*╠❏*  *${prefix}beritahoax*
+*╠❏*  *${prefix}brainly*
+*╠❏*  *${prefix}pinterest*
+*╠❏*  *${prefix}pinterestdl Url*
+*╠❏*  *${prefix}husbu*
+*╠❏*  *${prefix}waifu2*
+*╠❏*  *${prefix}waifu*
+*╠❏*  *${prefix}loli*
+*╠❏*  *${prefix}loli2*
+*╠❏*  *${prefix}neko*
+*╠❏*  *${prefix}neko2*
+*╠❏*  *${prefix}nekonime*
+*╠❏*  *${prefix}randomanime*
+*╠❏*  *${prefix}randomgame*
+*╠❏*  *${prefix}randomhusbu*
+*╠❏*  *${prefix}randomcyberspace*
+*╠❏*  *${prefix}randomexo*
+*╠❏*  *${prefix}blackpink*
+*╠❏*  *${prefix}randomgame*
+*╠❏*  *${prefix}randommountain*
+*╠❏*  *${prefix}randomloli*
+*╠❏*  *${prefix}randomprogramer*
+*╠❏*  *${prefix}hartatahta*
+*╠❏*  *${prefix}meme*
+*╠❏*  *${prefix}memeindo*
+*╠❏*  *${prefix}tts id*
+*╠❏*  *${prefix}moddroid*
+*╠❏*  *${prefix}happymod*
+*╠❏*  *${prefix}apkpure*
+*╠❏*  *${prefix}musik (judul)*
+*╠❏*  *${prefix}getmusic (reply bot)*
+*╠❏*  *${prefix}film*
+*╠❏*  *${prefix}lk21*
+*╠❏*  *${prefix}play*
+*╠❏*  *${prefix}jooxplay*
+*╠❏*  *${prefix}ytplay*
+*╠❏*  *${prefix}ytmp4*
+*╠❏*  *${prefix}ytmp3*
+*╠❏*  *${prefix}ytsearch*
+*╠❏*  *${prefix}music* (judul lagu)
+*╠❏*  *${prefix}getmusic* (nomor urut lagu)
+*╠❏*  *${prefix}video* (judul video)
+*╠❏*  *${prefix}getv* (nomor urut video)
+*╠❏*  *${prefix}spotify* (link)
+*╠❏*  *${prefix}spotifysearch*
+*╠❏*  *${prefix}lirik*
+*╠❏*  *${prefix}ssweb*
+*╠❏*  *${prefix}map*
+*╠❏*  *${prefix}stalkig*
+*╠❏*  *${prefix}afk*
+*╠❏*  *${prefix}unafk*
+*╠❏*  *${prefix}asupan*
+*╠❏*  *${prefix}imageislamic*
+*╠❏*  *${prefix}infocuaca* (kota)
+*╠❏*  *${prefix}pemandangan*
+*╠❏*  *${prefix}doraemon*
+*╠❏*  *${prefix}ww2*
+*╠❏*  *${prefix}cogan*
+*╠❏*  *${prefix}cecan*
+*╠❏*  *${prefix}kelinci*
+*╚❏*  *${prefix}infogempa*
+
+*╔❏* *SOUND MENU*
+*╠❏*  *${prefix}fast* (reply sound)
+*╠❏*  *${prefix}slow* (reply sound)
+*╠❏*  *${prefix}gemuk* (reply sound)
+*╠❏*  *${prefix}tupai* (reply sound)
+*╠❏*  *${prefix}iri*
+*╠❏*  *${prefix}pale*
+*╠❏*  *${prefix}abangjago*
+*╠❏*  *${prefix}abangjago2*
+*╠❏*  *${prefix}yamate*
+*╠❏*  *${prefix}bodoh*
+*╠❏*  *${prefix}dj1*
+*╠❏*  *${prefix}dj2*
+*╠❏*  *${prefix}dj3*
+*╠❏*  *${prefix}dj4*
+*╠❏*  *${prefix}dj5*
+*╠❏*  *${prefix}dj6*
+*╠❏*  *${prefix}dj7*
+*╠❏*  *${prefix}sound*
+*╠❏*  *${prefix}sound1*
+*╠❏*  *${prefix}sound2*
+*╠❏*  *${prefix}sound3*
+*╠❏*  *${prefix}sound4*
+*╠❏*  *${prefix}sound5*
+*╠❏*  *${prefix}sound6*
+*╚❏*  *${prefix}sound7*
+
+*╔❏* *LIMIT MENU*
+*╠❏*  *${prefix}limit*
+*╠❏*  *${prefix}buylimit*
+*╚❏*  *${prefix}dompet*
+
+*╔❏* *NSFW MENU*
+*╠❏*  *${prefix}cersex*
+*╠❏*  *${prefix}nhentai*
+*╠❏*  *${prefix}nhentaipdf*
+*╠❏*  *${prefix}pokemon*
+*╠❏*  *${prefix}anjing*
+*╠❏*  *${prefix}nsfwloli*
+*╠❏*  *${prefix}nsfwneko*
+*╠❏*  *${prefix}solo*
+*╠❏*  *${prefix}nsfwtrap*
+*╠❏*  *${prefix}nsfwpussy*
+*╠❏*  *${prefix}nsfwyuri*
+*╠❏*  *${prefix}ero*
+*╠❏*  *${prefix}nsfwloli2*
+*╠❏*  *${prefix}sideoppai*
+*╠❏*  *${prefix}nsfwwaifu*
+*╠❏*  *${prefix}ecchi*
+*╠❏*  *${prefix}nekopoi* <judul>
+*╠❏*  *${prefix}xnxx*
+*╠❏*  *${prefix}xnxxsearch*
+*╠❏*  *${prefix}xhamstersearch*
+*╠❏*  *${prefix}random_hentai_gif*
+*╠❏*  *${prefix}nsfw_neko_gif*
+*╠❏*  *${prefix}chiisaihentai*
+*╠❏*  *${prefix}blowjob*
+*╠❏*  *${prefix}hentai*
+*╠❏*  *${prefix}animefeets*
+*╠❏*  *${prefix}animebooty*
+*╠❏*  *${prefix}animethighss*
+*╠❏*  *${prefix}hentaiparadise*
+*╠❏*  *${prefix}animearmpits*
+*╠❏*  *${prefix}hentaifemdom*
+*╠❏*  *${prefix}lewdanimegirls*
+*╠❏*  *${prefix}biganimetiddies*
+*╠❏*  *${prefix}animebellybutton*
+*╠❏*  *${prefix}hentai4everyone*
+*╠❏*  *${prefix}cium*
+*╚❏*  *${prefix}ahegao*
+
+*╔❏* *GROUP MENU*
+*╠❏*  *${prefix}hidetag*
+*╠❏*  *${prefix}del*
+*╠❏*  *${prefix}grouplist*
+*╠❏*  *${prefix}level*
+*╠❏*  *${prefix}leaderboard*
+*╠❏*  *${prefix}linkgc*
+*╠❏*  *${prefix}tagall*
+*╠❏*  *${prefix}setpp*
+*╠❏*  *${prefix}add*
+*╠❏*  *${prefix}kick*
+*╠❏*  *${prefix}setname*
+*╠❏*  *${prefix}setdesc*
+*╠❏*  *${prefix}demote*
+*╠❏*  *${prefix}promote*
+*╠❏*  *${prefix}listadmin*
+*╠❏*  *${prefix}group* [buka/tutup]
+*╠❏*  *${prefix}leveling* [enable/disable]
+*╠❏*  *${prefix}nsfw* [1/0]
+*╠❏*  *${prefix}simih* [1/0]
+*╚❏*  *${prefix}welcome* [1/0]
+
+*╔❏* *OWNER MENU*
+*╠❏*  *${prefix}fdeface* (link|anjay|jadi|blabla
+*╠❏*  *${prefix}bug/hack*
+*╠❏*  *${prefix}bc*
+*╠❏*  *${prefix}bcgc*
+*╠❏*  *${prefix}kickall* Mau Ngapain Tod? >:
+*╠❏*  *${prefix}setreply*
+*╠❏*  *${prefix}setprefix*
+*╠❏*  *${prefix}clearall*
+*╠❏*  *${prefix}block*
+*╠❏*  *${prefix}unblock*
+*╠❏*  *${prefix}antidelete aktif/ctaktif*
+*╠❏*  *${prefix}addbadword* <teks>
+*╠❏*  *${prefix}listbadword*
+*╠❏*  *${prefix}nobadword* <enable/disable>
+*╠❏*  *${prefix}listblock*
+*╠❏*  *${prefix}leave*
+*╠❏*  *${prefix}event* [1/0]
+*╠❏*  *${prefix}clone*
+*╠❏*  *${prefix}setppbot*
+*╠❏*  *${prefix}public*
+*╚❏*  *${prefix}self*
+
+├───⊱⸨ *THANKS TO* ⸩  ⊰─═══
+│©ALLAH SWT
+│©ORANG TUA
+│©KING LEO
+│©MhankAkbar
+│©HAMBA ALLAH
+│©KING BAMBANG
+│©KING AGUZ
+│©KING AUFA
+├ *ALL CREATOR BOT*
+╰──── ⸨ *👑MR.KINGLEOBOT👑* ⸩
+`
+bambang.sendMessage(from, {text: menunya, matchedText: `https://api-self.herokuapp.com`, canonicalUrl: `https://api-self.herokuapp.com`, description: `BENNY GANTENG`, title: `Rest APIs`, jpegThumbnail: buffer}, 'extendedTextMessage', {contextInfo: {mentionedJid: [sender, botNumber], isForwarded: true, forwardingScore: 999}, detectLinks: true, quoted: { "key": { "participant": `${numbernye}`, "remoteJid": `${setgrup}`, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": buffer, "mimetype": "application/octet-stream", "title": `${fake}`, "fileLength": "36", "pageCount": 0, "fileName": `${fake}` }}, "messageTimestamp": "1614069378", "status": "PENDING"}})
                     break
                                case 'donasi':
 				case 'donate':
@@ -5780,7 +5865,7 @@ benny.sendMessage(from, {text: ind.menu(pushname, prefix, getLevelingLevel, getL
 				case 'blocklist': 
 					teks = '𝗕𝗟𝗢𝗖𝗞 𝗟𝗜𝗦𝗧 :\n'
 					for (let block of blocked) {
-						teks += `┣➢ @${block.split('@')[0]}\n`
+						teks += `┣*╠❏* @${block.split('@')[0]}\n`
 					}
 					teks += `𝗧𝗼𝘁𝗮𝗹 : ${blocked.length}`
 					bambang.sendMessage(from, teks.trim(), extendedText, {quoted: mek, contextInfo: {"mentionedJid": blocked}})

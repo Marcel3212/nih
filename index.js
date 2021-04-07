@@ -74,7 +74,9 @@ fake = "*SELFBOT*"
 vr = '*🍁MR.KINGLEO🍁*'
 banChats = true
 offline = false
+banChat = false
 publik = false
+alasanoff = 'Tidur'
 waktuafk = '-'
 alasanafk = '-'
 /******** OWNER NUMBER**********/
@@ -802,12 +804,13 @@ if (!mek.key.remoteJid.endsWith('@g.us') && offline){
 			if (isCmd && isGroup) console.log('\x1b[1;31m~\x1b[1;37m>', '[\x1b[1;32mEXEC\x1b[1;37m]', time, color(command), 'from', color(sender.split('@')[0]), 'in', color(groupName), 'args :', color(args.length))
 			if (!isCmd && isGroup) console.log('\x1b[1;31m~\x1b[1;37m>', '[\x1b[1;31mRECV\x1b[1;37m]', time, color('Message'), 'from', color(sender.split('@')[0]), 'in', color(groupName), 'args :', color(args.length))
 					 if (!mek.key.fromMe && banChats === true) return
+					 if (!mek.key.fromMe && banChat === true) return
 			switch(command) {
                case 'self':
           	if (!mek.key.fromMe) return
           	if (banChats === true) return
           	uptime = process.uptime()
-         	 // var taged = ben.message.extendedTextMessage.contextInfo.mentionedJid[0]
+         	 // var taged = mek.message.extendedTextMessage.contextInfo.mentionedJid[0]
          	banChats = true
           	bambang.sendMessage(from, `「 *SELF-MODE* 」`, text,{quoted:mek})
           	break
@@ -815,7 +818,7 @@ if (!mek.key.remoteJid.endsWith('@g.us') && offline){
           	if (!mek.key.fromMe) return
           	if (banChats === false) return
           	uptime = process.uptime()
-          	// var taged = ben.message.extendedTextMessage.contextInfo.mentionedJid[0]
+          	// var taged = mek.message.extendedTextMessage.contextInfo.mentionedJid[0]
           	banChats = false
           	bambang.sendMessage(from, `「 *PUBLIC-MODE* 」`, text,{quoted:mek})
           	break
@@ -5815,6 +5818,54 @@ bambang.sendMessage(from, {text: menunya, matchedText: `https://api-self.herokua
 				if (!isRegistered) return reply(ind.noregis())
 					bambang.sendMessage(from, donasi(), text)
 					break
+					case 'online':
+  if (!isRegistered && !mek.key.fromMe) return cheat(mess.only.Registered)
+				    if (!isOwner && !mek.key.fromMe) return bambang.sendMessage(from, `*Maaf @${sender.split('@')[0]} Perintah ${prefix}${command} tidak ada di list ${prefix}menu!*`, text, { contextInfo: {mentionedJid: [sender]}, quoted: { "key": { "participant": numbernye, "remoteJid": setgrup, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": setthumb, "mimetype": "application/octet-stream","title": "_*BENNYBOT*_", "fileLength": "36", "pageCount": 0, "fileName": `${fake}`}}, "messageTimestamp": "1614069378", "status": "PENDING"}})
+			if (banChat === false) return
+					banChat = false
+				bambang.sendMessage(from, `*Sucess online!*`, text, { quoted: {
+    "key": {
+	  "participant": numbernye,
+      "remoteJid": setgrup,
+      "fromMe": false,
+      "id": "6DC12F684FE43FDB835CFE35CC6F5503"
+    },
+    "message": {
+      "contactMessage": {
+        "displayName": "BENNYBOT",
+        "vcard": "BEGIN:VCARD\nVERSION:3.0\nN:Telkomsel;Benny;;;\nFN:BENNYBOT\nitem1.TEL;waid=6289636006352:+62 813-8728-9617\nitem1.X-ABLabel:Ponsel\nEND:VCARD"
+      }
+    },
+    "messageTimestamp": "1614159034",
+    "status": "ERROR"
+  }
+					})
+  break
+					case 'offline':
+				    if (!isOwner && !mek.key.fromMe) return bambang.sendMessage(from, `*Maaf @${sender.split('@')[0]} Perintah ${prefix}${command} tidak ada di list ${prefix}menu!*`, text, { contextInfo: {mentionedJid: [sender]}, quoted: { "key": { "participant": numbernye, "remoteJid": setgrup, "fromMe": false, "id": "B391837A58338BA8186C47E51FFDFD4A" }, "message": { "documentMessage": { "jpegThumbnail": setthumb, "mimetype": "application/octet-stream","title": "_*BENNYBOT*_", "fileLength": "36", "pageCount": 0, "fileName": `${fake}`}}, "messageTimestamp": "1614069378", "status": "PENDING"}})
+			if (args.length < 1) return reply('Apa alasan bot offline?')
+					if (banChat === true) return
+					banChat = true
+					alasanoff = body.slice(9)
+					waktuoff = `${time}`
+				bambang.sendMessage(from, `*Sucess offline!*\n*Alasan* : ${alasanoff}\n*Waktu:* ${waktuoff}`, text, { contextInfo: {mentionedJid: [sender]}, quoted: {
+    "key": {
+	  "participant": numbernye,
+      "remoteJid": setgrup,
+      "fromMe": false,
+      "id": "6DC12F684FE43FDB835CFE35CC6F5503"
+    },
+    "message": {
+      "contactMessage": {
+        "displayName": "BENNYBOT",
+        "vcard": "BEGIN:VCARD\nVERSION:3.0\nN:Telkomsel;Benny;;;\nFN:BENNYBOT\nitem1.TEL;waid=6289636006352:+62 813-8728-9617\nitem1.X-ABLabel:Ponsel\nEND:VCARD"
+      }
+    },
+    "messageTimestamp": "1614159034",
+    "status": "ERROR"
+  }
+					})
+  break
                 case 'level':
 		case 'lvl':
                 if (!isRegistered) return reply(ind.noregis())
